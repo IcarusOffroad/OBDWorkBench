@@ -1,0 +1,12 @@
+OBD Workbench v0.5.0.0 Public Test Preview - source correction r2
+
+This source correction addresses the first Windows public-release preflight compile report.
+
+Fixed:
+- Added explicit System.IO imports to SupportBundleService.cs and MainWindow.PublicTest.cs for Path/File/Directory/FileNotFoundException.
+- Replaced the nonexistent DtcDescriptionDatabase.Describe() call in MainWindow.Gems.cs with the existing Lookup(code, manufacturer, vehicleSignature) API and preserves both description and definition source.
+- Explicitly typed TD5 static-identity dictionary keys as byte in MainWindow.Td5.cs so GetValueOrDefault<TKey,TValue>() type inference is unambiguous.
+
+The previous preflight showed that OBDWorkbench.Core, OBDWorkbench.Platform.Windows, and RegressionTests compiled successfully before WPF compilation stopped on these errors.
+
+Please run public-release-preflight.bat again on Windows. This correction has not been compiled inside the ChatGPT container because the .NET SDK is unavailable there.

@@ -1,0 +1,15 @@
+OBD WorkBench v0.5.0.0 Public Test r12
+
+Changes from r11:
+- Restored the gauge progress arc.
+- Increased low/high warning-band stroke thickness so the narrower progress arc remains visible without hiding the configured ranges.
+- Added ELM prompt re-synchronization after command timeouts; if the prompt cannot be recovered, no further vehicle command is sent until reconnect/recovery.
+- Suppressed ATSP0 automatic-protocol fallback during recovery once a protocol has already been confirmed.
+- Blocked generic Mode 04 clear while the diagnostic link is unstable or recovering.
+- Learned Mode 03 responder set after successful DTC reads to avoid repeatedly waiting for modules that do not answer Mode 03.
+
+Rationale:
+The supplied 2005 Jeep Liberty CRD logs show ELM STOPPED responses after host-side timeouts and automatic protocol fallback after a confirmed ISO 9141-2 session failed. Those behaviors can make recovery noisy and, on vehicles that expose another network on alternate DLC pins, unnecessarily exercise unrelated protocol transceivers.
+
+Build note:
+Static/source validation only in the assistant environment; run public-release-preflight.bat on Windows before use.

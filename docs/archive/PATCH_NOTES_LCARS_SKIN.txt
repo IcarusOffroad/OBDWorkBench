@@ -1,0 +1,9 @@
+LCARS-inspired optional GUI, r17 based on r12 source
+
+- Rebalanced the masthead and replay footer for 1366×768 screenshots, freeing height for gauges and trends.
+- Switched Live Data to a dedicated LCARS row layout with larger values, source/time detail and filtering; classic columns return when skin is off.
+- Added LCARS color treatment to key replay, logging and live controls only while the skin is enabled.
+- Upper monitor continues to show actual recent hex traffic without extra bus requests.
+- Classic layout remains selectable in Preferences.
+
+Static validation: XAML parsed; LCARS resource and handler references checked; ZIP integrity verified. Windows WPF compilation/visual run remains to be done.

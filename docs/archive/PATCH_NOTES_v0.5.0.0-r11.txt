@@ -1,0 +1,9 @@
+OBD WorkBench v0.5.0.0 Public Test r11
+
+Dashboard gauge rendering correction:
+- Removed the legacy value-progress arc that painted from gauge minimum to the current value using the signal color.
+- Gauge scale remains neutral.
+- Configured low/high range bands are now the only colored sweep segments.
+- The needle/value indicator retains the signal color.
+
+This prevents the current-value sweep from visually overlapping or masquerading as a configured warning/range band.

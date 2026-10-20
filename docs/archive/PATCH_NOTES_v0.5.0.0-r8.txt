@@ -1,0 +1,33 @@
+OBD WorkBench v0.5.0.0 Public Test r8
+
+Presentation / engineering calculations
+- Replaces offset-only signal adjustment with Displayed = decoded x Gain + Offset.
+- Live Data calibration dialog includes Gain, Offset, Set zero, reset, and decimal places.
+- Gauge/trend configuration includes Gain, Offset, Set zero, decimal places, direct Min/Max entry, and signal colors.
+- Set zero computes the offset needed to make the current reading zero using the current gain.
+- CSV/native evidence remains unmodified; support bundles record displayed/unadjusted value, gain, offset and precision.
+
+Calculated values
+- Right-click Live Data, pinned/card values, dashboard gauges, or trend legend entries and choose Create new Calculated value.
+- A is always the selected live source; B/C/D are user constants.
+- Safe arithmetic expressions support A/B/C/D, numeric literals, parentheses, +, -, *, and / only.
+- Includes F/C, mph/km/h/m/s, RPM/Hz/RPH conversion presets.
+- Calculated values become normal numeric Live Data values and can be pinned, trended, gauged, calibrated, and CSV logged.
+
+Dashboard / trends
+- Dashboard defaults to 4 columns with a 2/3/4/5-column selector and denser gauge tiles.
+- Gauge configuration supports low and high colored sweep ranges.
+- Trend drag-rectangle zoom can be repeated; Reset zoom restores the normal rolling window.
+- Trend configuration can display a dot for every recorded sample.
+
+UI / TD5
+- Main navigation is moved inline with the OBD WorkBench title.
+- Visual navigation order: Live Data, Dashboard, Trending, DTCs, Modules, PIDs, Console.
+- Explicit touch navigation handles tab switching on touchscreens.
+- Polling Priority groups duplicate raw/derived rows by request and shows decoded plain-English signal descriptions.
+- TD5 PID 0x07 is now labeled Manifold Absolute Pressure (known), no longer candidate.
+- Tooltips use the application theme to prevent unreadable white hover boxes.
+
+Compatibility
+- This r8 build intentionally does not migrate renamed/saved presentation settings. Reconfigure dashboard/trend/calibration settings as needed.
+- Windows WPF compile and regression preflight are still required on the release machine.

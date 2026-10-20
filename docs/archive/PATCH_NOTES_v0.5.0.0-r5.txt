@@ -1,0 +1,12 @@
+OBD WorkBench v0.5.0.0 public-test r5
+
+- Support ZIP capture made self-verifying; active Session/CSV snapshots, LiveSnapshot.csv, Events.csv and CaptureStatus.txt.
+- SSM DTC read integrated using validated capability-selected current/history banks and SSM_DTC_MAP.csv.
+- SSM guarded engine-memory reset integrated for validated A2100E / 2D1A255105 fingerprint only.
+- Engine-speed / vehicle-speed dashboard gauges use zero baseline.
+- Direct Min/Max editing disables Autoscale; incomplete/invalid range pairs highlight red.
+- Bottom Apply / Apply & Close applies trend rolling-window changes; redundant timespan Apply button removed.
+- Preset color picker adds Custom HSV/RGB picker.
+- Live Data search header height and favorites-star centering corrected.
+
+Run public-release-preflight.bat on Windows before publishing.

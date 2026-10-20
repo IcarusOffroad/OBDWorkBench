@@ -1,0 +1,3 @@
+Asset: OBDWorkbench/Assets/SplashConcept.png
+Generated with the built-in image tool, editing the existing splash artwork.
+Prompt: Preserve the copper/ivory feather, gear and circuits, Icarus Offroad / OBD WorkBench / Vehicle diagnostics & data logging. Enlarge branding across the upper region. Extend subdued circuits, topographic contours, compass and mountains through the full charcoal background; remove baked-in loading, progress, version and website text. Reserve lower area for real application controls.

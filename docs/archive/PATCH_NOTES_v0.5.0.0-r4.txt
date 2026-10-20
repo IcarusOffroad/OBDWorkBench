@@ -1,0 +1,9 @@
+OBD WorkBench v0.5.0.0 public test source r4
+
+SSM compile correction after r3:
+- Restored PidLiveValue.SampleStatus from the v0.4.1 SSM branch.
+- Restored CsvDataLogger.Log(..., sampleStatus) so SSM quality/status metadata is written to the existing Status CSV column.
+- Restored replay application of saved sample status/raw data.
+- Restored live-value tooltip for SampleStatus.
+
+These are the companion API/UI changes that belong with the SSM MainWindow integration restored in r3.

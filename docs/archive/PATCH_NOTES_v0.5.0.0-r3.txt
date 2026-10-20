@@ -1,0 +1,24 @@
+OBD WorkBench v0.5.0.0 public-test source r3
+
+Restores the Subaru SSM2 support that existed in the user-supplied v0.4.1.0 source branch and was omitted when v0.5 was based on v0.4.0.
+
+Restored:
+- SSM splash tile and StartupConnectionFamily.Ssm routing
+- native 4800-baud Windows SSM K-Line transport
+- SsmProtocol, SsmConnection and 156-definition SsmParameterCatalog
+- BF capability initialization/filtering
+- A8 capability-filtered live reads with adaptive batching
+- SSM live-data polling, trends/dashboard integration, CSV logging and replay compatibility
+- remembered SSM COM port
+- SSM regression tests
+- ReferenceData/SSM_DTC_MAP.csv and the project COMMUNICATIONS_REFERENCE.md
+
+New v0.5 public-test integration for SSM:
+- stable SSM ECU fingerprint from System ID, ROM ID and BF capability bytes
+- known-profile recognition for the development System ID A2100E / ROM ID 2D1A255105
+- automatic early CSV/session capture
+- event markers
+- SSM-specific Support ZIP evidence (BF raw data, System/ROM ID, supported parameter list, A8 batch limit)
+- SSM_CONNECTION.md and public-test documentation updates
+
+SSM DTC read/clear remains intentionally unexposed in this Workbench build. The retained communications reference documents the separately validated DTC bank/clear research for later guarded integration.
