@@ -1,0 +1,32 @@
+Enabled,Name,Request,ResponseMode,PID,Formula,Units,Min,Max,PollMs,Priority,ExpectedResponses,Category,Notes,DiscoveryOnly,DerivedOnly,DisplayKind
+true,Engine RPM,010C,41,0C,((A*256)+B)/4,rpm,0,8000,400,5,1,Engine,Requested interval; scheduler scales to measured link capacity,false,false,
+true,Coolant Temperature,0105,41,05,((A-40)*9/5)+32,°F,-40,419,10000,2,1,Temperature,Requested interval; scheduler scales to measured link capacity,false,false,
+true,Vehicle Speed,010D,41,0D,A*0.621371,mph,0,160,1000,4,1,Vehicle,Requested interval; scheduler scales to measured link capacity,false,false,
+true,Mass Air Flow,0110,41,10,((A*256)+B)/100,g/s,0,655.35,2000,3,0,Engine,Generic Mode 01 PID 10,false,false,Numeric
+true,Throttle Position,0111,41,11,A*100/255,%,0,100,400,5,1,Engine,Requested interval; scheduler scales to measured link capacity,false,false,
+true,Calculated Engine Load,0104,41,04,A*100/255,%,0,100,2500,4,1,Engine,Requested interval; scheduler scales to measured link capacity,false,false,
+true,Intake Air Temperature,010F,41,0F,((A-40)*9/5)+32,°F,-40,419,15000,1,1,Temperature,Requested interval; scheduler scales to measured link capacity,false,false,
+true,Short Fuel Trim B1,0106,41,06,(A-128)*100/128,%, -100,99.2,7500,2,1,Fuel,Requested interval; scheduler scales to measured link capacity,false,false,
+true,Long Fuel Trim B1,0107,41,07,(A-128)*100/128,%, -100,99.2,15000,1,1,Fuel,Requested interval; scheduler scales to measured link capacity,false,false,
+true,Short Fuel Trim B2,0108,41,08,(A-128)*100/128,%,-100,99.2,7500,2,1,Fuel,Generic Mode 01 PID 08,false,false,
+true,Long Fuel Trim B2,0109,41,09,(A-128)*100/128,%,-100,99.2,15000,1,1,Fuel,Generic Mode 01 PID 09,false,false,
+true,Monitor Status,0101,41,01,A*16777216+B*65536+C*256+D,status,0,4294967295,30000,1,0,Diagnostics,Readiness/MIL summary; scheduler scales to measured link capacity,false,false,
+true,DTC Count,0101,41,01,DTC_COUNT,count,0,127,30000,1,0,Diagnostics,Derived from the same PID 01 response as Monitor Status,false,true,DtcCount
+true,Fuel System 1,0103,41,03,A,enum,0,255,15000,1,0,Fuel,First fuel-system loop state,false,false,FuelStatus
+true,Fuel System 2,0103,41,03,B,enum,0,255,15000,1,0,Fuel,Derived from same PID 03 response as Fuel System 1,false,true,FuelStatus
+true,Manifold Absolute Pressure,010B,41,0B,A,kPa,0,255,2000,3,0,Engine,Requested interval; scheduler scales to measured link capacity,false,false,
+true,Ignition Timing Advance,010E,41,0E,A/2-64,deg,-64,63.5,3000,3,0,Engine,Requested interval; scheduler scales to measured link capacity,false,false,
+true,Oxygen Sensors Present,0113,41,13,A,bitmask,0,255,10000,1,0,Emissions,Discovery snapshot; refreshed on rediscovery,true,false,O2Locations
+true,Oxygen Sensor B1S1 Voltage,0114,41,14,A/200,V,0,1.275,10000,2,0,Emissions,Conventional narrowband O2 sensor voltage,false,false,Numeric
+true,Short Fuel Trim B1S1,0114,41,14,(B-128)*100/128,%,-100,99.2,10000,2,0,Emissions,Derived from same PID 14 response as B1S1 voltage,false,true,Numeric
+true,Oxygen Sensor B1S2 Voltage,0115,41,15,A/200,V,0,1.275,15000,2,0,Emissions,Conventional narrowband O2 sensor voltage,false,false,Numeric
+true,Short Fuel Trim B1S2,0115,41,15,(B-128)*100/128,%,-100,99.2,15000,2,0,Emissions,Derived from same PID 15 response as B1S2 voltage,false,true,Numeric
+true,Oxygen Sensor B2S1 Voltage,0118,41,18,A/200,V,0,1.275,10000,2,0,Emissions,Conventional narrowband O2 sensor voltage,false,false,Numeric
+true,Short Fuel Trim B2S1,0118,41,18,(B-128)*100/128,%,-100,99.2,10000,2,0,Emissions,Derived from same PID 18 response as B2S1 voltage,false,true,Numeric
+true,Oxygen Sensor B2S2 Voltage,0119,41,19,A/200,V,0,1.275,15000,2,0,Emissions,Conventional narrowband O2 sensor voltage,false,false,Numeric
+true,Short Fuel Trim B2S2,0119,41,19,(B-128)*100/128,%,-100,99.2,15000,2,0,Emissions,Derived from same PID 19 response as B2S2 voltage,false,true,Numeric
+true,OBD Compliance,011C,41,1C,A,enum,0,255,10000,1,0,Diagnostics,Discovery snapshot; refreshed on rediscovery,true,false,ObdCompliance
+true,Equivalence Ratio B1S1,0124,41,24,((A*256)+B)/32768,ratio,0,1.99997,7500,2,0,Emissions,Wideband O2 equivalence ratio; Mode 01 PID 24,false,false,
+true,Wideband O2 B1S1 Voltage,0124,41,24,((C*256)+D)/8192,V,0,7.9999,7500,2,0,Emissions,Derived from same PID 24 response as equivalence ratio,false,true,
+true,Equivalence Ratio B2S1,0128,41,28,((A*256)+B)/32768,ratio,0,1.99997,7500,2,0,Emissions,Wideband O2 equivalence ratio; Mode 01 PID 28,false,false,
+true,Wideband O2 B2S1 Voltage,0128,41,28,((C*256)+D)/8192,V,0,7.9999,7500,2,0,Emissions,Derived from same PID 28 response as equivalence ratio,false,true,

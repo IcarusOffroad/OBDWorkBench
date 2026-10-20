@@ -1,0 +1,88 @@
+Code,Description
+P0010,A camshaft position actuator circuit fault on bank 1
+P0011,A camshaft timing is over-advanced or system performance fault on bank 1
+P0012,A camshaft timing is over-retarded on bank 1
+P0016,Crankshaft and camshaft position correlation fault on bank 1 sensor A
+P0030,Heated oxygen sensor heater control circuit fault bank 1 sensor 1
+P0036,Heated oxygen sensor heater control circuit fault bank 1 sensor 2
+P0100,Mass or volume air flow circuit fault
+P0101,Mass or volume air flow circuit range or performance fault
+P0102,Mass or volume air flow circuit low input
+P0103,Mass or volume air flow circuit high input
+P0105,Manifold absolute pressure or barometric pressure circuit fault
+P0106,Manifold absolute pressure or barometric pressure circuit range or performance fault
+P0110,Intake air temperature sensor 1 circuit fault
+P0112,Intake air temperature sensor 1 circuit low input
+P0113,Intake air temperature sensor 1 circuit high input
+P0115,Engine coolant temperature sensor 1 circuit fault
+P0116,Engine coolant temperature sensor 1 circuit range or performance fault
+P0117,Engine coolant temperature sensor 1 circuit low input
+P0118,Engine coolant temperature sensor 1 circuit high input
+P0120,Throttle or pedal position sensor A circuit fault
+P0121,Throttle or pedal position sensor A circuit range or performance fault
+P0122,Throttle or pedal position sensor A circuit low input
+P0123,Throttle or pedal position sensor A circuit high input
+P0130,Oxygen sensor circuit fault bank 1 sensor 1
+P0131,Oxygen sensor circuit low voltage bank 1 sensor 1
+P0132,Oxygen sensor circuit high voltage bank 1 sensor 1
+P0133,Oxygen sensor circuit slow response bank 1 sensor 1
+P0134,Oxygen sensor circuit no activity detected bank 1 sensor 1
+P0135,Oxygen sensor heater circuit fault bank 1 sensor 1
+P0136,Oxygen sensor circuit fault bank 1 sensor 2
+P0141,Oxygen sensor heater circuit fault bank 1 sensor 2
+P0150,Oxygen sensor circuit fault bank 2 sensor 1
+P0155,Oxygen sensor heater circuit fault bank 2 sensor 1
+P0156,Oxygen sensor circuit fault bank 2 sensor 2
+P0161,Oxygen sensor heater circuit fault bank 2 sensor 2
+P0171,System too lean bank 1
+P0172,System too rich bank 1
+P0174,System too lean bank 2
+P0175,System too rich bank 2
+P0180,Fuel temperature sensor A circuit fault
+P0181,Fuel temperature sensor A circuit range or performance fault
+P0182,Fuel temperature sensor A circuit low input
+P0183,Fuel temperature sensor A circuit high input
+P0190,Fuel rail pressure sensor A circuit fault
+P0200,Injector circuit fault
+P0300,Random or multiple cylinder misfire detected
+P0301,Cylinder 1 misfire detected
+P0302,Cylinder 2 misfire detected
+P0303,Cylinder 3 misfire detected
+P0304,Cylinder 4 misfire detected
+P0305,Cylinder 5 misfire detected
+P0306,Cylinder 6 misfire detected
+P0307,Cylinder 7 misfire detected
+P0308,Cylinder 8 misfire detected
+P0325,Knock sensor 1 circuit fault bank 1 or single sensor
+P0335,Crankshaft position sensor A circuit fault
+P0336,Crankshaft position sensor A circuit range or performance fault
+P0340,Camshaft position sensor A circuit fault bank 1 or single sensor
+P0400,Exhaust gas recirculation flow fault
+P0401,Exhaust gas recirculation flow insufficient
+P0402,Exhaust gas recirculation flow excessive
+P0420,Catalyst system efficiency below threshold bank 1
+P0430,Catalyst system efficiency below threshold bank 2
+P0440,Evaporative emission control system fault
+P0441,Evaporative emission control system incorrect purge flow
+P0442,Evaporative emission control system leak detected small leak
+P0446,Evaporative emission control system vent control circuit fault
+P0455,Evaporative emission control system leak detected large leak
+P0500,Vehicle speed sensor A fault
+P0505,Idle control system fault
+P0560,System voltage fault
+P0562,System voltage low
+P0563,System voltage high
+P0600,Serial communication link fault
+P0601,Internal control module memory checksum error
+P0606,PCM or ECM processor fault
+P0700,Transmission control system malfunction request
+P0715,Input or turbine speed sensor A circuit fault
+P0720,Output speed sensor circuit fault
+P0730,Incorrect gear ratio
+P0740,Torque converter clutch circuit or open fault
+P0750,Shift solenoid A fault
+P0780,Shift malfunction
+U0100,Lost communication with ECM or PCM A
+U0101,Lost communication with transmission control module
+U0121,Lost communication with ABS control module
+U0140,Lost communication with body control module

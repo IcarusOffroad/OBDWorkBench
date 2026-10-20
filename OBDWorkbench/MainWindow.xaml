@@ -1,0 +1,688 @@
+<Window Icon="/OBDWorkbench;component/Assets/IcarusWorkbench.ico" x:Class="OBDWorkbench.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:OBDWorkbench.Controls"
+        Title="Icarus Offroad - OBD WorkBench v0.5.0.0" Height="850" Width="1440" MinHeight="300" MinWidth="360"
+        WindowStartupLocation="Manual" ResizeMode="CanResize" UseLayoutRounding="True">
+    <DockPanel>
+        <Grid DockPanel.Dock="Top" Height="5" Visibility="{DynamicResource LcarsFrameVisibility}" Margin="10,2,10,0">
+            <Grid.ColumnDefinitions><ColumnDefinition Width="2*"/><ColumnDefinition Width="8"/><ColumnDefinition Width="*"/><ColumnDefinition Width="8"/><ColumnDefinition Width="3*"/></Grid.ColumnDefinitions>
+            <Border Background="{DynamicResource LcarsPeachBrush}" CornerRadius="4"/>
+            <Border Grid.Column="2" Background="{DynamicResource LcarsLilacBrush}" CornerRadius="4"/>
+            <Border Grid.Column="4" Background="{DynamicResource LcarsBlueBrush}" CornerRadius="4"/>
+        </Grid>
+        <Grid DockPanel.Dock="Bottom" Height="8" Visibility="{DynamicResource LcarsFrameVisibility}" Margin="10,0,10,3">
+            <Grid.ColumnDefinitions><ColumnDefinition Width="2*"/><ColumnDefinition Width="8"/><ColumnDefinition Width="*"/><ColumnDefinition Width="8"/><ColumnDefinition Width="3*"/></Grid.ColumnDefinitions>
+            <Border Background="{DynamicResource LcarsPeachBrush}" CornerRadius="7"/>
+            <Border Grid.Column="2" Background="{DynamicResource LcarsLilacBrush}" CornerRadius="7"/>
+            <Border Grid.Column="4" Background="{DynamicResource LcarsBlueBrush}" CornerRadius="7"/>
+        </Grid>
+        <Border x:Name="LcarsMasthead" DockPanel.Dock="Top" Visibility="{DynamicResource LcarsFrameVisibility}" Height="64" Background="{DynamicResource AppBackgroundBrush}" Margin="10,2,10,2">
+            <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="245"/><ColumnDefinition Width="125"/><ColumnDefinition Width="140"/><ColumnDefinition Width="125"/><ColumnDefinition Width="*"/><ColumnDefinition Width="420"/></Grid.ColumnDefinitions>
+                <Border Grid.Column="0" Background="{DynamicResource LcarsPeachBrush}" CornerRadius="16,4,4,4" Padding="13,5" Margin="0,0,7,0"><StackPanel>
+                    <TextBlock Text="OBD WORKBENCH LCARS" Foreground="#10111C" FontFamily="Bahnschrift SemiCondensed" FontSize="23" FontWeight="Bold"/>
+                    <TextBlock Text="ICARUS OFFROAD / VEHICLE SYSTEMS" Foreground="#10111C" FontFamily="Bahnschrift SemiCondensed" FontSize="10" FontWeight="SemiBold"/>
+                </StackPanel></Border>
+                <Border Grid.Column="1" Background="{DynamicResource PanelBackgroundBrush}" CornerRadius="7" Padding="8,5" Margin="0,0,5,0"><StackPanel><TextBlock Text="VEHICLE" Foreground="{DynamicResource LcarsPeachBrush}" FontFamily="Bahnschrift SemiCondensed" FontSize="12" FontWeight="Bold"/><TextBlock Text="{Binding Text, ElementName=VehicleText}" TextTrimming="CharacterEllipsis" FontSize="13"/></StackPanel></Border>
+                <Border Grid.Column="2" Background="{DynamicResource PanelBackgroundBrush}" CornerRadius="7" Padding="8,5" Margin="0,0,5,0"><StackPanel><TextBlock Text="PROTOCOL" Foreground="{DynamicResource LcarsBlueBrush}" FontFamily="Bahnschrift SemiCondensed" FontSize="12" FontWeight="Bold"/><TextBlock Text="{Binding Text, ElementName=ProtocolText}" TextTrimming="CharacterEllipsis" FontSize="13"/></StackPanel></Border>
+                <Button Grid.Column="3" Background="{DynamicResource PanelBackgroundBrush}" BorderThickness="0" Padding="7,4" Margin="0,0,5,0" Click="CollapseConnection_Click" ToolTip="Open connection controls"><StackPanel><TextBlock Text="CONNECTION" Foreground="{DynamicResource LcarsPeachBrush}" FontFamily="Bahnschrift SemiCondensed" FontSize="12" FontWeight="Bold"/><TextBlock Text="{Binding Text, ElementName=StatusText}" FontSize="12" TextTrimming="CharacterEllipsis"/></StackPanel></Button>
+                <Border Grid.Column="4" Background="#020305" CornerRadius="7" Padding="7,4" Margin="0,0,7,0"><DockPanel><TextBlock DockPanel.Dock="Left" Text="HEX" Foreground="{DynamicResource LcarsPeachBrush}" FontFamily="Bahnschrift SemiCondensed" FontWeight="Bold" Margin="0,7,7,0"/><TextBlock x:Name="LcarsTrafficText" Text="Waiting for hex" FontFamily="Consolas" FontSize="10" Foreground="{DynamicResource AccentBrush}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" LineHeight="13"/></DockPanel></Border>
+                <Grid Grid.Column="5"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" Tag="0" Content="LIVE DATA" Background="{DynamicResource LcarsBlueBrush}" Click="LcarsNavigate_Click" FontFamily="Bahnschrift SemiCondensed" FontWeight="Bold" FontSize="14" Margin="0,0,5,0" Padding="5,2"/>
+                    <Button Grid.Column="1" Tag="1" Content="GAUGES" Background="{DynamicResource LcarsLilacBrush}" Click="LcarsNavigate_Click" FontFamily="Bahnschrift SemiCondensed" FontWeight="Bold" FontSize="14" Margin="0,0,5,0" Padding="5,2"/>
+                    <Button Grid.Column="2" Tag="2" Content="TRENDS" Background="{DynamicResource LcarsPeachBrush}" Click="LcarsNavigate_Click" FontFamily="Bahnschrift SemiCondensed" FontWeight="Bold" FontSize="14" Margin="0,0,5,0" Padding="5,2"/>
+                    <Button Grid.Column="3" Tag="3" Content="CONSOLE" Background="{DynamicResource LcarsBlueBrush}" Click="LcarsNavigate_Click" FontFamily="Bahnschrift SemiCondensed" FontWeight="Bold" FontSize="14" Margin="0,0,5,0" Padding="5,2"/>
+                    <Button Grid.Column="4" Content="SETTINGS" Background="{DynamicResource LcarsLilacBrush}" Click="Preferences_Click" FontFamily="Bahnschrift SemiCondensed" FontWeight="Bold" FontSize="14" Padding="5,2"/>
+                </Grid>
+            </Grid>
+        </Border>
+        <Button DockPanel.Dock="Top" HorizontalAlignment="Right" Padding="8,3" Margin="10,0" Click="GpsConfiguration_Click" ToolTip="GPS settings and NMEA debug">
+            <StackPanel Orientation="Horizontal"><Ellipse x:Name="GpsStatusLamp" Width="10" Height="10" Fill="Gray" Margin="0,0,6,0"/><TextBlock x:Name="GpsStatusText" Text="GPS disabled" VerticalAlignment="Center"/></StackPanel>
+        </Button>
+        <Border x:Name="ClassicTopBar" DockPanel.Dock="Top" Padding="10,3" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource AccentBrush}" CornerRadius="{DynamicResource LcarsCornerRadius}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="ClassicBrandTitle" Grid.Column="0" Text="OBD WorkBench" FontSize="20" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                <TextBlock Grid.Column="0" Visibility="{DynamicResource LcarsFrameVisibility}" FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Margin="5,2,22,3"><Run Text="ICARUS OFFROAD" Foreground="{DynamicResource LcarsPeachBrush}"/><Run Text="  OBD WORKBENCH" Foreground="{DynamicResource LcarsBlueBrush}"/></TextBlock>
+                <ScrollViewer x:Name="ClassicNavigation" Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" VerticalAlignment="Center" PanningMode="HorizontalOnly">
+                    <WrapPanel VerticalAlignment="Center">
+                        <RadioButton Style="{StaticResource NavigationRadioStyle}" GroupName="MainNavigation" Tag="0" Checked="Navigation_Checked" PreviewTouchDown="Navigation_TouchDown" IsChecked="True"><StackPanel Orientation="Horizontal"><Path Data="M0,13 L7,13 11,2 17,24 22,11 29,11" Stroke="{DynamicResource AccentBrush}" StrokeThickness="2" Width="20" Height="20" Stretch="Uniform" Margin="0,0,5,0" VerticalAlignment="Center"/><TextBlock Text="Live Data" FontSize="14" VerticalAlignment="Center"/></StackPanel></RadioButton>
+                        <RadioButton Style="{StaticResource NavigationRadioStyle}" GroupName="MainNavigation" Tag="1" Checked="Navigation_Checked" PreviewTouchDown="Navigation_TouchDown"><StackPanel Orientation="Horizontal"><Path Data="M2,24 A14,14 0 1 1 28,24 M15,20 L23,7" Stroke="{DynamicResource AccentBrush}" StrokeThickness="2" Width="20" Height="20" Stretch="Uniform" Margin="0,0,5,0" VerticalAlignment="Center"/><TextBlock Text="Dashboard" FontSize="14" VerticalAlignment="Center"/></StackPanel></RadioButton>
+                        <RadioButton Style="{StaticResource NavigationRadioStyle}" GroupName="MainNavigation" Tag="2" Checked="Navigation_Checked" PreviewTouchDown="Navigation_TouchDown"><StackPanel Orientation="Horizontal"><Path Data="M3,26 L3,18 7,18 7,26 Z M13,26 L13,10 17,10 17,26 Z M23,26 L23,2 27,2 27,26 Z" Stroke="{DynamicResource AccentBrush}" StrokeThickness="2" Width="20" Height="20" Stretch="Uniform" Margin="0,0,5,0" VerticalAlignment="Center"/><TextBlock Text="Trending" FontSize="14" VerticalAlignment="Center"/></StackPanel></RadioButton>
+                        <RadioButton Style="{StaticResource NavigationRadioStyle}" GroupName="MainNavigation" Tag="4" Checked="Navigation_Checked" PreviewTouchDown="Navigation_TouchDown"><StackPanel Orientation="Horizontal"><Path Data="M6,8 L11,8 11,4 20,4 20,8 25,8 29,12 33,12 33,23 28,23 25,27 9,27 5,22 2,22 2,13 6,13 Z M13,1 L20,1 M0,12 L0,23" Stroke="#FF9800" StrokeThickness="2" Width="20" Height="20" Stretch="Uniform" Margin="0,0,5,0" VerticalAlignment="Center"/><TextBlock Text="DTCs" FontSize="14" VerticalAlignment="Center"/></StackPanel></RadioButton>
+                        <RadioButton Style="{StaticResource NavigationRadioStyle}" GroupName="MainNavigation" Tag="5" Checked="Navigation_Checked" PreviewTouchDown="Navigation_TouchDown"><StackPanel Orientation="Horizontal"><Path Data="M4,8 L25,8 28,22 1,22 Z M6,8 L9,2 21,2 24,8 M5,22 L5,27 M24,22 L24,27" Stroke="{DynamicResource AccentBrush}" StrokeThickness="2" Width="20" Height="20" Stretch="Uniform" Margin="0,0,5,0" VerticalAlignment="Center"/><TextBlock Text="Modules" FontSize="14" VerticalAlignment="Center"/></StackPanel></RadioButton>
+                        <RadioButton Style="{StaticResource NavigationRadioStyle}" GroupName="MainNavigation" Tag="6" Checked="Navigation_Checked" PreviewTouchDown="Navigation_TouchDown"><StackPanel Orientation="Horizontal"><Path Data="M2,3 L27,3 27,27 2,27 Z M2,10 L27,10 M2,18 L27,18 M11,3 L11,27" Stroke="{DynamicResource AccentBrush}" StrokeThickness="2" Width="20" Height="20" Stretch="Uniform" Margin="0,0,5,0" VerticalAlignment="Center"/><TextBlock Text="PIDs" FontSize="14" VerticalAlignment="Center"/></StackPanel></RadioButton>
+                        <RadioButton Style="{StaticResource NavigationRadioStyle}" GroupName="MainNavigation" Tag="3" Checked="Navigation_Checked" PreviewTouchDown="Navigation_TouchDown"><StackPanel Orientation="Horizontal"><Path Data="M2,4 L12,14 2,24 M16,24 L29,24" Stroke="{DynamicResource AccentBrush}" StrokeThickness="2" Width="20" Height="20" Stretch="Uniform" Margin="0,0,5,0" VerticalAlignment="Center"/><TextBlock Text="Console" FontSize="14" VerticalAlignment="Center"/></StackPanel></RadioButton>
+                    </WrapPanel>
+                </ScrollViewer>
+                <TextBlock Grid.Column="1" Text="VEHICLE DIAGNOSTICS   •   LIVE TELEMETRY   •   SYSTEM STATUS" Visibility="{DynamicResource LcarsFrameVisibility}" Foreground="{DynamicResource LcarsPeachBrush}" FontSize="12" FontWeight="Bold" VerticalAlignment="Center" Margin="16,0,0,0"/>
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="8,0,4,0">
+                    <Ellipse x:Name="StatusLamp" Width="11" Height="11" Fill="#B00020" Margin="0,0,5,0"/>
+                    <TextBlock x:Name="StatusText" MaxWidth="150" TextTrimming="CharacterEllipsis" Text="Disconnected" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    <Button x:Name="CollapseConnectionButton" Content="▲" Margin="9,0,0,0" Padding="7,1" Click="CollapseConnection_Click" ToolTip="Collapse or expand connection controls"/>
+                </StackPanel>
+                <Button Grid.Column="3" Content="⚙" FontSize="24" Padding="8,3" Click="Preferences_Click" ToolTip="Preferences"/>
+            </Grid>
+        </Border>
+    <Grid x:Name="WorkbenchShell" Margin="10">
+        <Grid.ColumnDefinitions><ColumnDefinition x:Name="LcarsSidebarColumn" Width="0"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <Border x:Name="LcarsSidebar" Grid.Column="0" Visibility="Collapsed" CornerRadius="34,0,0,34" Margin="0" Padding="13,0,0,0">
+            <Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#999FFF" Offset="0"/><GradientStop Color="#999FFF" Offset="0.28"/>
+                <GradientStop Color="#D26E73" Offset="0.281"/><GradientStop Color="#D26E73" Offset="0.59"/>
+                <GradientStop Color="#FFA889" Offset="0.591"/><GradientStop Color="#FFA889" Offset="1"/>
+            </LinearGradientBrush></Border.Background>
+            <Grid Background="{DynamicResource AppBackgroundBrush}" Margin="17,14,0,16">
+                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                <Border Background="{DynamicResource LcarsLilacBrush}" CornerRadius="0,15,15,0" Padding="12,9" Margin="0,0,0,12"><TextBlock Text="LCARS SYSTEMS" Foreground="#080910" FontWeight="Bold" FontSize="17"/></Border>
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto"><StackPanel x:Name="LcarsNavigation">
+                    <Button Style="{StaticResource LcarsSidebarButtonStyle}" Tag="0" Content="LIVE DATA" Background="{DynamicResource LcarsBlueBrush}" Click="LcarsNavigate_Click"/>
+                    <Button Style="{StaticResource LcarsSidebarButtonStyle}" Tag="1" Content="GAUGES" Background="{DynamicResource LcarsLilacBrush}" Click="LcarsNavigate_Click"/>
+                    <Button Style="{StaticResource LcarsSidebarButtonStyle}" Tag="2" Content="TRENDS" Background="{DynamicResource LcarsPeachBrush}" Click="LcarsNavigate_Click"/>
+                    <Button Style="{StaticResource LcarsSidebarButtonStyle}" Tag="4" Content="DTCs" Background="{DynamicResource LcarsLilacBrush}" Click="LcarsNavigate_Click"/>
+                    <Button Style="{StaticResource LcarsSidebarButtonStyle}" Tag="5" Content="MODULES" Background="{DynamicResource LcarsBlueBrush}" Click="LcarsNavigate_Click"/>
+                    <Button Style="{StaticResource LcarsSidebarButtonStyle}" Tag="6" Content="PIDs" Background="{DynamicResource LcarsLilacBrush}" Click="LcarsNavigate_Click"/>
+                    <Button Style="{StaticResource LcarsSidebarButtonStyle}" Tag="3" Content="CONSOLE" Background="{DynamicResource LcarsPeachBrush}" Click="LcarsNavigate_Click"/>
+                </StackPanel></ScrollViewer>
+                <StackPanel Grid.Row="2"><Button Style="{StaticResource LcarsSidebarButtonStyle}" Content="SETTINGS" Background="{DynamicResource LcarsLilacBrush}" Click="Preferences_Click"/><TextBlock Text="LCARS  /  ICARUS OFFROAD" Foreground="{DynamicResource LcarsPeachBrush}" FontSize="10" Margin="9,13,0,0"/></StackPanel>
+            </Grid>
+        </Border>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+            <Border x:Name="LcarsSectionHeader" Grid.Row="0" Visibility="{DynamicResource LcarsFrameVisibility}" Background="{DynamicResource LcarsLilacBrush}" CornerRadius="0,20,20,0" Padding="17,5" Margin="0,0,0,5">
+                <DockPanel><TextBlock DockPanel.Dock="Right" Text="LCARS  •  DIAGNOSTICS  •  LOGGING  •  ANALYSIS" Foreground="#151522" FontSize="11" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="LcarsSectionTitle" Text="LIVE DATA" Foreground="#10111C" FontWeight="Bold" FontSize="27" FontFamily="Bahnschrift SemiCondensed"/></DockPanel>
+            </Border>
+    <Grid Grid.Row="1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="6"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border x:Name="ConnectionPanel" Grid.Row="0" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="{DynamicResource LcarsCornerRadius}" Padding="7">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <DockPanel Grid.Row="0" LastChildFill="True">
+                    <WrapPanel DockPanel.Dock="Top" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,0,7">
+                        <TextBlock Text="   Transport: "/>
+                        <TextBlock x:Name="TransportText" Text="--" FontWeight="SemiBold"/>
+                        <TextBlock Text="   Protocol: "/>
+                        <TextBlock x:Name="ProtocolText" Text="--" FontWeight="SemiBold"/>
+                        <TextBlock Text="   Adapter: "/>
+                        <TextBlock x:Name="AdapterText" Text="--" FontWeight="SemiBold"/>
+                        <TextBlock Text="   Vehicle: "/><TextBlock x:Name="VehicleText" Text="--" FontWeight="SemiBold"/>
+
+                    </WrapPanel>
+
+                    <WrapPanel x:Name="ConnectionPrimaryControls" VerticalAlignment="Center">
+                        <TextBlock Text="Connection" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <ComboBox x:Name="ConnectionTypeCombo" Width="102" SelectedIndex="0" Margin="0,0,8,0" SelectionChanged="ConnectionType_Changed">
+                            <ComboBoxItem Content="Serial"/>
+                            <ComboBoxItem Content="Wi-Fi TCP"/>
+                        </ComboBox>
+
+                        <StackPanel x:Name="SerialControlsPanel" Orientation="Horizontal">
+                            <TextBlock Text="Port" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                            <ComboBox x:Name="PortCombo" Width="82"/>
+                            <Button x:Name="RefreshPortsButton" Content="Refresh" Margin="5,0,8,0" Padding="8,3" Click="RefreshPorts_Click"/>
+                            <TextBlock Text="Baud" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                            <ComboBox x:Name="BaudCombo" Width="82" SelectedIndex="0" Margin="0,0,8,0">
+                                <ComboBoxItem Content="38400"/>
+                                <ComboBoxItem Content="9600"/>
+                                <ComboBoxItem Content="115200"/>
+                                <ComboBoxItem Content="57600"/>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <StackPanel x:Name="WifiControlsPanel" Orientation="Horizontal" Visibility="Collapsed">
+                            <TextBlock Text="IP/host" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                            <TextBox x:Name="WifiHostBox" Width="112" Text="192.168.0.10" Padding="4,2"/>
+                            <TextBlock Text="Port" VerticalAlignment="Center" Margin="7,0,5,0"/>
+                            <TextBox x:Name="WifiPortBox" Width="62" Text="35000" Padding="4,2"/>
+                            <Button x:Name="FindWifiPortButton" Content="Find Port" Margin="5,0,8,0" Padding="8,3" Click="FindWifiPort_Click"
+                                    ToolTip="Tries common ELM327 TCP ports and verifies the endpoint with ATZ."/>
+                        </StackPanel>
+
+                        <Button x:Name="ConnectButton" Content="Connect + Initialize" Margin="0,0,5,0" Padding="10,3" Click="Connect_Click"/>
+                        <Button x:Name="PollingButton" Content="Start Polling" Margin="0,0,8,0" Padding="10,3" Click="Polling_Click" IsEnabled="False"/>
+                        <CheckBox x:Name="ShowPollingTrafficCheck" Content="Show polling traffic" VerticalAlignment="Center"/>
+                    </WrapPanel>
+                </DockPanel>
+
+                <DockPanel x:Name="ConnectionOptionsRow" Grid.Row="1" Margin="0,6,0,0" LastChildFill="True">
+                    <TextBlock x:Name="TimingStatusText" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{DynamicResource SecondaryTextBrush}" Text="ELM timing: default"/>
+                    <WrapPanel VerticalAlignment="Center">
+                        <TextBlock Text="Protocol" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <ComboBox x:Name="ProtocolCombo" Width="126" SelectedIndex="0" Margin="0,0,10,0">
+                            <ComboBoxItem Content="Auto"/>
+                            <ComboBoxItem Content="ISO 9141-2 (3)"/>
+                        </ComboBox>
+                        <CheckBox x:Name="UseResponseCountCheck" Content="Expected response count" IsChecked="True" VerticalAlignment="Center" Margin="0,0,10,0"
+                                  ToolTip="Uses discovered responder count per PID; unknown counts use the full response window."/>
+                        <TextBlock Text="ELM timing" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <ComboBox x:Name="TimingCombo" Width="165" SelectedIndex="0" IsEnabled="False">
+                            <ComboBoxItem Content="Conservative (~200 ms)"/>
+                            <ComboBoxItem Content="Fast adaptive (~200 ms max)"/>
+                            <ComboBoxItem Content="Fast + short timeout (~80 ms)"/>
+                        </ComboBox>
+                        <Button x:Name="ApplyTimingButton" Content="Apply" Margin="5,0,5,0" Padding="9,3" Click="ApplyTiming_Click" IsEnabled="False"/>
+                        <Button x:Name="BenchmarkButton" Content="Safe benchmark" Padding="9,3" Click="BenchmarkTiming_Click" IsEnabled="False"
+                                ToolTip="Benchmarks adaptive timing first, then tries the shorter timeout only if the ECU remains reliable."/>
+                    </WrapPanel>
+                </DockPanel>
+
+                <DockPanel x:Name="ConnectionHealthRow" Grid.Row="2" Margin="0,6,0,0" LastChildFill="True">
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0,0,0">
+                        <TextBlock Text="Link: " Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        <TextBlock x:Name="LinkHealthText" Text="--" FontWeight="SemiBold"/>
+                    </StackPanel>
+                    <WrapPanel VerticalAlignment="Center">
+                        <TextBlock Text="Quiet delay" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <ComboBox x:Name="DelayCombo" Width="82" SelectedIndex="0" Margin="0,0,8,0" ToolTip="Delay after each ECU PID transaction. Does not count toward RTT.">
+                            <ComboBoxItem Content="0 ms" Tag="0"/>
+                            <ComboBoxItem Content="25 ms" Tag="25"/>
+                            <ComboBoxItem Content="50 ms" Tag="50"/>
+                            <ComboBoxItem Content="60 ms" Tag="60"/>
+                            <ComboBoxItem Content="75 ms" Tag="75"/>
+                            <ComboBoxItem Content="100 ms" Tag="100"/>
+                            <ComboBoxItem Content="200 ms" Tag="200"/>
+                        </ComboBox>
+                        <Button x:Name="StabilityTestButton" Content="Test delays" Padding="9,3" Margin="0,0,10,0" Click="StabilityTest_Click" IsEnabled="False"
+                                ToolTip="Tests safe 60/75/100/200 ms delays and selects the smallest error-free delay."/>
+                        <CheckBox x:Name="AutoRecoverCheck" Content="Auto recover after" IsChecked="True" VerticalAlignment="Center"/>
+                        <ComboBox x:Name="RecoveryThresholdCombo" Width="50" SelectedIndex="0" Margin="5,0,4,0">
+                            <ComboBoxItem Content="3"/>
+                            <ComboBoxItem Content="5"/>
+                            <ComboBoxItem Content="8"/>
+                        </ComboBox>
+                        <TextBlock Text="consecutive errors" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                        <CheckBox x:Name="RememberAdapterSettingsCheck" Content="Remember adapter settings" IsChecked="True" VerticalAlignment="Center"/>
+                        <CheckBox x:Name="DetailedPollMetricsCheck" Content="Detailed poll metrics" IsChecked="False" VerticalAlignment="Center" Margin="12,0,0,0" Checked="DetailedPollMetrics_Changed" Unchecked="DetailedPollMetrics_Changed"/>
+                    </WrapPanel>
+                </DockPanel>
+
+                <Border x:Name="ConnectionMetricsPanel" Grid.Row="3" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="7" Margin="0,6,0,0" Background="{DynamicResource PanelBackgroundBrush}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0"><TextBlock Text="Query rate" Foreground="{DynamicResource SecondaryTextBrush}" FontSize="11"/><TextBlock x:Name="QueryRateText" Text="-- /s" FontSize="18" FontWeight="SemiBold"/></StackPanel>
+                        <StackPanel Grid.Column="1"><TextBlock Text="Avg RTT" Foreground="{DynamicResource SecondaryTextBrush}" FontSize="11"/><TextBlock x:Name="AvgRttText" Text="-- ms" FontSize="18" FontWeight="SemiBold"/></StackPanel>
+                        <StackPanel Grid.Column="2"><TextBlock Text="Avg first" Foreground="{DynamicResource SecondaryTextBrush}" FontSize="11"/><TextBlock x:Name="AvgFirstByteText" Text="-- ms" FontSize="18" FontWeight="SemiBold"/></StackPanel>
+                        <StackPanel Grid.Column="3"><TextBlock Text="Avg tail" Foreground="{DynamicResource SecondaryTextBrush}" FontSize="11"/><TextBlock x:Name="AvgTailText" Text="-- ms" FontSize="18" FontWeight="SemiBold"/></StackPanel>
+                        <StackPanel Grid.Column="4"><TextBlock Text="Last RTT" Foreground="{DynamicResource SecondaryTextBrush}" FontSize="11"/><TextBlock x:Name="LastRttText" Text="-- ms" FontSize="18" FontWeight="SemiBold"/></StackPanel>
+                        <StackPanel Grid.Column="5"><TextBlock Text="Queries" Foreground="{DynamicResource SecondaryTextBrush}" FontSize="11"/><TextBlock x:Name="QueryCountText" Text="0" FontSize="18" FontWeight="SemiBold"/></StackPanel>
+                        <StackPanel Grid.Column="6"><TextBlock Text="Errors" Foreground="{DynamicResource SecondaryTextBrush}" FontSize="11"/><TextBlock x:Name="QueryErrorText" Text="0" FontSize="18" FontWeight="SemiBold"/></StackPanel>
+                        <StackPanel Grid.Column="7"><TextBlock Text="Rolling error" Foreground="{DynamicResource SecondaryTextBrush}" FontSize="11"/><TextBlock x:Name="RollingErrorText" Text="-- %" FontSize="18" FontWeight="SemiBold"/></StackPanel>
+                        <StackPanel Grid.Column="8"><TextBlock Text="Recoveries" Foreground="{DynamicResource SecondaryTextBrush}" FontSize="11"/><TextBlock x:Name="RecoveryCountText" Text="0" FontSize="18" FontWeight="SemiBold"/></StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+
+        <TabControl x:Name="MainTabs" Grid.Row="2" SelectedIndex="0" SelectionChanged="MainTabs_LcarsSelectionChanged">
+            <TabControl.Template><ControlTemplate TargetType="TabControl"><ContentPresenter ContentSource="SelectedContent"/></ControlTemplate></TabControl.Template>
+            <TabItem><TabItem.Header><StackPanel Orientation="Horizontal"><Path Data="M0,13 L7,13 11,2 17,24 22,11 29,11" Stroke="{DynamicResource AccentBrush}" StrokeThickness="2" Width="22" Height="22" Stretch="Uniform" Margin="0,0,6,0" VerticalAlignment="Center"/><TextBlock Text="Live Data" FontSize="14" VerticalAlignment="Center"/></StackPanel></TabItem.Header>
+                <Grid Margin="6">
+                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                    <DockPanel x:Name="LiveDataTitleRow" Margin="4,5,4,10"><CheckBox x:Name="CardViewCheck" DockPanel.Dock="Right" Content="Card view" Checked="LiveView_Changed" Unchecked="LiveView_Changed"/><TextBlock Text="Live Data" FontSize="23" FontWeight="SemiBold"/></DockPanel>
+                    <Grid x:Name="LiveTablePanel" Grid.Row="1">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition x:Name="LiveDataRailColumn" Width="240"/></Grid.ColumnDefinitions>
+                        <DataGrid x:Name="LiveDataTable" LoadingRow="LiveDataTable_LoadingRow" Sorting="LiveDataTable_Sorting" MouseDoubleClick="LiveValue_DoubleClick" PreviewMouseRightButtonDown="LiveDataTable_PreviewMouseRightButtonDown" ItemsSource="{Binding LiveValues}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" SelectionMode="Single" SelectionUnit="FullRow" EnableRowVirtualization="True" ColumnHeaderHeight="62">
+                            <DataGrid.ContextMenu>
+                                <ContextMenu DataContext="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource Self}}">
+                                    <MenuItem Header="Add to Trend" Click="AddToTrend_Click" IsEnabled="{Binding CanTrend}"/>
+                                    <MenuItem Header="Add to Dashboard" Click="AddToDashboard_Click" IsEnabled="{Binding CanTrend}"/>
+                                    <MenuItem Header="Add to Trend &amp; Gauge" Click="AddToTrendAndGauge_Click" IsEnabled="{Binding CanTrend}"/>
+                                    <Separator/>
+                                    <MenuItem Header="Create new Calculated value…" Click="CreateCalculatedValue_Click" IsEnabled="{Binding CanTrend}"/>
+                                    <MenuItem Header="Delete calculated value" Click="DeleteCalculatedValue_Click" IsEnabled="{Binding IsCalculated}"/>
+                                </ContextMenu>
+                            </DataGrid.ContextMenu>
+
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn SortMemberPath="Star" Width="48" CanUserSort="True">
+                                    <DataGridTemplateColumn.Header><TextBlock Text="★" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/></DataGridTemplateColumn.Header>
+                                    <DataGridTemplateColumn.CellStyle>
+                                        <Style TargetType="DataGridCell">
+                                            <Setter Property="Padding" Value="0"/>
+                                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                            <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                        </Style>
+                                    </DataGridTemplateColumn.CellStyle>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Style="{StaticResource PinButtonStyle}" Width="40" Height="34" Padding="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="TogglePin_Click" ToolTip="Pin / unpin reading">
+                                                <TextBlock Text="{Binding PinGlyph}" FontSize="22" Foreground="{Binding PinBrush}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Binding="{Binding Definition.Name}" SortMemberPath="Signal" Width="*" MinWidth="220">
+                                    <DataGridTextColumn.Header>
+                                        <StackPanel>
+                                            <TextBlock Text="Signal"/>
+                                            <TextBox x:Name="SignalFilterBox" Width="180" Height="24" Margin="0,4,0,1" Padding="5,2" ToolTip="Filter signal names" TextChanged="SignalFilterBox_TextChanged" PreviewMouseLeftButtonDown="SignalFilterBox_PreviewMouseLeftButtonDown"/>
+                                        </StackPanel>
+                                    </DataGridTextColumn.Header>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="Value" SortMemberPath="Value" Binding="{Binding DisplayValue}" Width="160"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock"><Setter Property="ToolTip" Value="{Binding SampleStatus}"/><Setter Property="Foreground" Value="{Binding AccentBrush}"/><Setter Property="FontWeight" Value="SemiBold"/></Style></DataGridTextColumn.ElementStyle></DataGridTextColumn>
+                                <DataGridTextColumn Header="Unit" SortMemberPath="Unit" Binding="{Binding Units}" Width="75"/>
+                                <DataGridTextColumn Header="Source" SortMemberPath="Source" Binding="{Binding SourceDisplay}" Width="100"/>
+                                <DataGridTextColumn Header="Updated" SortMemberPath="Updated" Binding="{Binding UpdatedText}" Width="120"/>
+                                <DataGridTemplateColumn SortMemberPath="Signal" Width="*" Visibility="Collapsed">
+                                    <DataGridTemplateColumn.Header>
+                                        <Grid Width="780"><Grid.ColumnDefinitions><ColumnDefinition Width="3*"/><ColumnDefinition Width="2*"/><ColumnDefinition Width="2*"/></Grid.ColumnDefinitions>
+                                            <StackPanel><TextBlock Text="PARAMETER" FontFamily="Bahnschrift SemiCondensed" FontSize="16" FontWeight="Bold"/><TextBox x:Name="LcarsSignalFilterBox" Width="195" HorizontalAlignment="Left" Height="23" Margin="0,2,0,0" Padding="5,1" ToolTip="Filter signal names" TextChanged="SignalFilterBox_TextChanged" PreviewMouseLeftButtonDown="SignalFilterBox_PreviewMouseLeftButtonDown"/></StackPanel>
+                                            <TextBlock Grid.Column="1" Text="CURRENT VALUE" FontFamily="Bahnschrift SemiCondensed" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="2" Text="ECU / UPDATED" FontFamily="Bahnschrift SemiCondensed" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </DataGridTemplateColumn.Header>
+                                    <DataGridTemplateColumn.CellTemplate><DataTemplate>
+                                        <Grid Margin="4,2"><Grid.ColumnDefinitions><ColumnDefinition Width="3*"/><ColumnDefinition Width="2*"/><ColumnDefinition Width="2*"/></Grid.ColumnDefinitions>
+                                            <DockPanel VerticalAlignment="Center"><Border DockPanel.Dock="Left" Width="10" Background="{Binding AccentBrush}" CornerRadius="6" Margin="0,2,10,2"/><StackPanel><TextBlock Text="{Binding Definition.Name}" FontFamily="Bahnschrift SemiCondensed" FontSize="18" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/><TextBlock Text="{Binding Definition.Request}" Foreground="{DynamicResource SecondaryTextBrush}" FontSize="11"/></StackPanel></DockPanel>
+                                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center"><TextBlock Text="{Binding DisplayValue}" Foreground="{DynamicResource AccentBrush}" FontFamily="Bahnschrift SemiCondensed" FontSize="34" FontWeight="Bold"/><TextBlock Text="{Binding Units}" FontSize="13" Margin="7,0,0,4" VerticalAlignment="Bottom"/></StackPanel>
+                                            <StackPanel Grid.Column="2" VerticalAlignment="Center"><TextBlock Text="{Binding SourceDisplay}" FontSize="13"/><TextBlock Text="{Binding UpdatedText}" Foreground="{DynamicResource SecondaryTextBrush}" FontSize="11"/></StackPanel>
+                                        </Grid>
+                                    </DataTemplate></DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <Border Grid.Column="1" Margin="12,0,0,0" Padding="8" BorderThickness="1" CornerRadius="6">
+                            <DockPanel>
+                            <Border DockPanel.Dock="Top" Visibility="{DynamicResource LcarsFrameVisibility}" BorderBrush="{DynamicResource LcarsLilacBrush}" BorderThickness="2" CornerRadius="16" Padding="10" Background="{DynamicResource ControlBackgroundBrush}" Margin="0,0,0,12">
+                                <StackPanel>
+                                    <Border Background="{DynamicResource LcarsLilacBrush}" CornerRadius="12" Padding="8,5" Margin="0,0,0,10"><TextBlock Text="CONNECTION" Foreground="#10111C" FontSize="15" FontWeight="Bold"/></Border>
+                                    <TextBlock Text="{Binding Text, ElementName=StatusText}" Foreground="{DynamicResource LcarsBlueBrush}" FontSize="17" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding Text, ElementName=ProtocolText}" TextTrimming="CharacterEllipsis" Margin="0,6,0,0"/>
+                                    <TextBlock Text="{Binding Text, ElementName=VehicleText}" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,3,0,11"/>
+                                </StackPanel>
+                            </Border>
+                            <Border DockPanel.Dock="Bottom" Visibility="{DynamicResource LcarsFrameVisibility}" BorderBrush="{DynamicResource LcarsBlueBrush}" BorderThickness="2" CornerRadius="15" Padding="9" Margin="0,10,0,0" Background="{DynamicResource ControlBackgroundBrush}">
+                                <StackPanel><Border Background="{DynamicResource LcarsBlueBrush}" CornerRadius="10" Padding="8,4" Margin="0,0,0,7"><TextBlock Text="LCARS  /  SESSION" Foreground="#10111C" FontSize="15" FontFamily="Bahnschrift SemiCondensed" FontWeight="Bold"/></Border>
+                                    <TextBlock Text="LIVE TELEMETRY" Foreground="{DynamicResource LcarsPeachBrush}" FontSize="13" FontWeight="Bold"/>
+                                    <TextBlock Text="Raw hex traffic appears in the upper display. Full frames remain in Console." Foreground="{DynamicResource SecondaryTextBrush}" FontSize="11" TextWrapping="Wrap" Margin="0,4,0,8"/>
+                                    <Button Content="{Binding Content, ElementName=LoggingButton}" Click="Logging_Click" Padding="9,7" Background="{DynamicResource LcarsActionBrush}" Foreground="#10111C"/>
+                                </StackPanel>
+                            </Border>
+                            <Border DockPanel.Dock="Top" Background="{DynamicResource LcarsPeachBrush}" CornerRadius="12" Padding="9,5" Margin="0,0,0,6" Visibility="{DynamicResource LcarsFrameVisibility}"><TextBlock Text="LCARS  /  PINNED READINGS" Foreground="#10111C" FontFamily="Bahnschrift SemiCondensed" FontSize="17" FontWeight="Bold"/></Border>
+                            <TextBlock x:Name="ClassicPinnedHeader" DockPanel.Dock="Top" Text="★  PINNED READINGS" FontSize="17" FontWeight="SemiBold" Margin="0,0,0,6"/>
+                            <TextBlock DockPanel.Dock="Bottom" Text="Tap a star to pin or unpin a signal." FontSize="10" TextWrapping="Wrap" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,5,0,0"/>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" PanningMode="VerticalOnly" PanningDeceleration="0.001" PanningRatio="1" IsManipulationEnabled="True">
+                             <ItemsControl ItemsSource="{Binding PinnedReadings}"><ItemsControl.ItemTemplate><DataTemplate>
+                              <Border Margin="0,0,0,4" Padding="6,5" BorderThickness="2,0,0,0" BorderBrush="{Binding AccentBrush}" Stylus.IsPressAndHoldEnabled="True" MouseLeftButtonDown="LiveValue_DoubleClick" ToolTip="Double-click to configure gain, offset, and precision; right-click or touch-hold for trend/dashboard actions">
+                               <Border.ContextMenu>
+                                <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+                                 <MenuItem Header="Add to Trend" Click="AddToTrend_Click" IsEnabled="{Binding CanTrend}"/>
+                                 <MenuItem Header="Add to Dashboard" Click="AddToDashboard_Click" IsEnabled="{Binding CanTrend}"/>
+                                 <MenuItem Header="Add to Trend &amp; Gauge" Click="AddToTrendAndGauge_Click" IsEnabled="{Binding CanTrend}"/>
+                                 <Separator/>
+                                 <MenuItem Header="Create new Calculated value…" Click="CreateCalculatedValue_Click" IsEnabled="{Binding CanTrend}"/>
+                                 <MenuItem Header="Delete calculated value" Click="DeleteCalculatedValue_Click" IsEnabled="{Binding IsCalculated}"/>
+                                </ContextMenu>
+                               </Border.ContextMenu>
+                               <StackPanel>
+                                <DockPanel LastChildFill="True"><Button DockPanel.Dock="Right" Foreground="#FFD700" Click="TogglePin_Click" Padding="5,1" MinWidth="30" MinHeight="24" ToolTip="Unpin signal"><TextBlock Text="★" Foreground="#FFD700" FontSize="15"/></Button><TextBlock Text="{Binding Definition.Name}" FontSize="12" FontWeight="SemiBold" TextWrapping="Wrap" VerticalAlignment="Center"/></DockPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,3,0,0"><TextBlock Text="{Binding DisplayValue}" Foreground="{Binding AccentBrush}" FontSize="22" FontWeight="SemiBold" TextWrapping="Wrap" VerticalAlignment="Bottom"/><TextBlock Text="{Binding Units}" FontSize="12" Margin="6,0,0,2" VerticalAlignment="Bottom"/></StackPanel>
+                                <TextBlock Text="{Binding SourceDisplay}" Foreground="{DynamicResource SecondaryTextBrush}" FontSize="10" Margin="0,1,0,0"/>
+                               </StackPanel>
+                              </Border>
+                             </DataTemplate></ItemsControl.ItemTemplate></ItemsControl>
+                            </ScrollViewer></DockPanel>
+                        </Border>
+                    </Grid>
+                    <ScrollViewer Grid.Row="1" Visibility="Collapsed" x:Name="LiveDataScrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" PanningMode="VerticalOnly" PanningDeceleration="0.001" PanningRatio="1">
+                        <ItemsControl ItemsSource="{Binding LiveValues}">
+                            <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Width="320" MinHeight="160" Margin="6" Padding="10" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="{DynamicResource LcarsCornerRadius}"
+                                            Stylus.IsPressAndHoldEnabled="True" MouseLeftButtonDown="LiveValue_DoubleClick" ToolTip="Double-click to configure gain, offset, and precision; right-click or touch-hold to add this value to Trending, Dashboard, or both">
+                                        <Border.ContextMenu>
+                                            <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+                                                <MenuItem Header="Add to Trend" Click="AddToTrend_Click" IsEnabled="{Binding CanTrend}"/>
+                                                <MenuItem Header="Add to Dashboard" Click="AddToDashboard_Click" IsEnabled="{Binding CanTrend}"/>
+                                                <MenuItem Header="Add to Trend &amp; Gauge" Click="AddToTrendAndGauge_Click" IsEnabled="{Binding CanTrend}"/>
+                                                <Separator/>
+                                                <MenuItem Header="Create new Calculated value…" Click="CreateCalculatedValue_Click" IsEnabled="{Binding CanTrend}"/>
+                                                <MenuItem Header="Delete calculated value" Click="DeleteCalculatedValue_Click" IsEnabled="{Binding IsCalculated}"/>
+                                            </ContextMenu>
+                                        </Border.ContextMenu>
+                                        <Grid>
+                                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                                            <DockPanel><Button DockPanel.Dock="Right" Style="{StaticResource PinButtonStyle}" FontSize="20" Click="TogglePin_Click" Padding="7,0"><TextBlock Text="{Binding PinGlyph}" FontSize="22" Foreground="{Binding PinBrush}"/></Button><TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="14" TextWrapping="Wrap"/></DockPanel>
+                                            <StackPanel Grid.Row="1" VerticalAlignment="Center" Margin="0,8">
+                                                <TextBlock Foreground="{Binding AccentBrush}" Text="{Binding DisplayValue}" FontSize="19" FontWeight="Bold" TextWrapping="Wrap"/>
+                                                <TextBlock Text="{Binding Units}" FontSize="14" Margin="6,11,0,0" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                            <TextBlock Grid.Row="2" Text="{Binding PerformanceText, Mode=OneWay}" Foreground="{DynamicResource SecondaryTextBrush}" FontSize="10.5" TextWrapping="Wrap" Visibility="{Binding ShowDetailedMetrics, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                            <StackPanel Grid.Row="3" Orientation="Horizontal">
+                                                <TextBlock Text="Updated: " Foreground="{DynamicResource SecondaryTextBrush}" FontSize="10.5"/>
+                                                <TextBlock Foreground="{DynamicResource SecondaryTextBrush}" FontSize="10.5" Text="{Binding UpdatedText, Mode=OneWay}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+
+            <TabItem><TabItem.Header><StackPanel Orientation="Horizontal"><Path Data="M2,24 A14,14 0 1 1 28,24 M15,20 L23,7" Stroke="{DynamicResource AccentBrush}" StrokeThickness="2" Width="22" Height="22" Stretch="Uniform" Margin="0,0,6,0" VerticalAlignment="Center"/><TextBlock Text="Dashboard" FontSize="14" VerticalAlignment="Center"/></StackPanel></TabItem.Header>
+                <Grid Margin="6">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <WrapPanel Grid.Row="0" Margin="0,0,0,6" VerticalAlignment="Center">
+                        <Button Content="Reset ranges" Padding="10,3" Margin="0,0,5,0" Click="ResetDashboardRanges_Click"/>
+                        <Button Content="Clear gauges" Padding="10,3" Margin="0,0,10,0" Click="ClearDashboardGauges_Click"/>
+                        <TextBlock Text="Grid" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <ComboBox x:Name="DashboardGridCombo" Width="92" Margin="0,0,14,0" SelectionChanged="DashboardGridCombo_SelectionChanged">
+                            <ComboBoxItem Content="2 columns" Tag="2"/><ComboBoxItem Content="3 columns" Tag="3"/><ComboBoxItem Content="4 columns" Tag="4"/><ComboBoxItem Content="5 columns" Tag="5"/>
+                        </ComboBox>
+
+                        <TextBlock Text="Saved dashboard" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <ComboBox x:Name="DashboardPresetCombo" Width="175" ItemsSource="{Binding DashboardPresetNames}"/>
+                        <Button Content="Load" Padding="10,3" Margin="5,0,5,0" Click="LoadDashboardPreset_Click"/>
+                        <Button Content="Delete" Padding="10,3" Margin="0,0,14,0" Click="DeleteDashboardPreset_Click"/>
+
+                        <TextBlock Text="Save as" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <TextBox x:Name="DashboardPresetNameBox" Width="175" Padding="4,2"/>
+                        <Button Content="Save" Padding="10,3" Margin="5,0,0,0" Click="SaveDashboardPreset_Click"/>
+                    </WrapPanel>
+
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" PanningMode="VerticalOnly" PanningDeceleration="0.001" PanningRatio="1">
+                        <ItemsControl x:Name="DashboardGaugeItems" ItemsSource="{Binding DashboardGauges}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate><UniformGrid Columns="{Binding DashboardGridColumns, RelativeSource={RelativeSource AncestorType=Window}}"/></ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Margin="5" Padding="8" MinHeight="{DynamicResource LcarsGaugeTileHeight}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="{DynamicResource LcarsCornerRadius}"
+                                            Background="{DynamicResource PanelBackgroundBrush}" AllowDrop="True" Drop="DashboardTile_Drop"
+                                            MouseLeftButtonDown="DashboardGauge_DoubleClick" ToolTip="Double-click to configure this gauge">
+                                        <Border.ContextMenu>
+                                            <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+                                                <MenuItem Header="Create new Calculated value…" Click="CreateCalculatedFromConfiguredSignal_Click"/>
+                                            </ContextMenu>
+                                        </Border.ContextMenu>
+                                        <Grid>
+                                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                                            <Border Grid.Row="0" Height="25" Margin="0,0,0,4" CornerRadius="16,16,3,3" Background="{Binding Accent}" Visibility="{DynamicResource LcarsFrameVisibility}"><TextBlock Text="LCARS  /  SENSOR ARRAY" Foreground="#10111C" FontFamily="Bahnschrift SemiCondensed" FontWeight="Bold" FontSize="15" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,14,0"/></Border>
+                                            <Grid Grid.Row="1">
+                                                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold" FontSize="13" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                                                <Border Grid.Column="1" Margin="6,0,0,0" Padding="7,2" CornerRadius="3" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                                                        Cursor="SizeAll" Background="{DynamicResource ControlBackgroundBrush}" ToolTip="Drag to reorder"
+                                                        PreviewMouseLeftButtonDown="DashboardTile_PreviewMouseLeftButtonDown" PreviewMouseMove="DashboardTile_PreviewMouseMove" PreviewMouseLeftButtonUp="DashboardTile_PreviewMouseLeftButtonUp"
+                                                        PreviewTouchDown="DashboardTile_PreviewTouchDown" PreviewTouchMove="DashboardTile_PreviewTouchMove" PreviewTouchUp="DashboardTile_PreviewTouchUp">
+                                                    <TextBlock Text="☰" FontSize="15" VerticalAlignment="Center"/>
+                                                </Border>
+                                                <Button Grid.Column="2" Content="×" Tag="{Binding Key}" Margin="6,0,0,0" Padding="6,0" Click="RemoveDashboardGauge_Click" ToolTip="Remove from dashboard"/>
+                                            </Grid>
+                                            <controls:DashboardGaugeControl Grid.Row="2" State="{Binding}" MinHeight="{DynamicResource LcarsGaugeFaceHeight}" Margin="0,1,0,0"/>
+                                            <Grid Grid.Row="3" Height="27" Margin="10,0,10,2" Visibility="{DynamicResource LcarsFrameVisibility}">
+                                                <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                                                <Border Grid.Column="0" Background="{Binding LowRangeBrush}" CornerRadius="13,0,0,13" Margin="0,0,3,0" Opacity="0.9"/>
+                                                <Border Grid.Column="1" Background="{Binding Accent}" Margin="0,0,3,0" Opacity="0.9"/>
+                                                <Border Grid.Column="2" Background="{Binding HighRangeBrush}" CornerRadius="0,13,13,0" Opacity="0.9"/>
+                                                <TextBlock Grid.ColumnSpan="3" Text="LOW                         NOMINAL                         HIGH" Foreground="#10111C" FontFamily="Bahnschrift SemiCondensed" FontWeight="Bold" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                    <TextBlock x:Name="DashboardStatusText" Grid.Row="2" Margin="0,6,0,0" Foreground="{DynamicResource SecondaryTextBrush}"
+                               Text="Right-click or touch-hold a numeric Data card and choose Add to Dashboard. Double-click a gauge to configure its color and scale. Use the Grid selector for 2–5 columns. Gauges can be dragged to reorder." TextWrapping="Wrap"/>
+                </Grid>
+            </TabItem>
+
+            <TabItem><TabItem.Header><StackPanel Orientation="Horizontal"><Path Data="M3,26 L3,18 7,18 7,26 Z M13,26 L13,10 17,10 17,26 Z M23,26 L23,2 27,2 27,26 Z" Stroke="{DynamicResource AccentBrush}" StrokeThickness="2" Width="22" Height="22" Stretch="Uniform" Margin="0,0,6,0" VerticalAlignment="Center"/><TextBlock Text="Trending" FontSize="14" VerticalAlignment="Center"/></StackPanel></TabItem.Header>
+                <Grid Margin="6">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <ScrollViewer x:Name="LcarsTrendSelector" Grid.Row="0" Visibility="{DynamicResource LcarsFrameVisibility}" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Margin="0,0,0,7">
+                        <StackPanel Orientation="Horizontal"><ItemsControl ItemsSource="{Binding TrendSeries}"><ItemsControl.ItemsPanel><ItemsPanelTemplate><StackPanel Orientation="Horizontal"/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate><DataTemplate><Border Background="{DynamicResource PanelBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Margin="0,0,7,0" Padding="10,7"><StackPanel Orientation="Horizontal"><Ellipse Width="12" Height="12" Fill="{Binding Stroke}" Margin="0,0,8,0"/><TextBlock Text="{Binding LegendLabel}" FontSize="13"/></StackPanel></Border></DataTemplate></ItemsControl.ItemTemplate></ItemsControl>
+                            <Button Content="＋ ADD PARAMETER" Padding="11,6" Click="ConfigureTrends_Click"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                    <WrapPanel x:Name="TrendOptionsBar" Visibility="Collapsed" Grid.Row="0" Margin="0,0,0,6" VerticalAlignment="Center">
+                        <CheckBox x:Name="OverlayTrendCheck" Content="Overlay plots" IsChecked="False" Checked="TrendLayout_Changed" Unchecked="TrendLayout_Changed" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                        
+                        <TextBlock Text="Rolling window" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <TextBox x:Name="TrendWindowSecondsBox" Width="58" Text="60" Padding="4,2"/>
+                        <TextBlock Text="sec" VerticalAlignment="Center" Margin="4,0,12,0"/>
+                        <Button Content="Clear history" Padding="10,3" Margin="0,0,5,0" Click="ClearTrendHistory_Click"/>
+                        <Button Content="Clear signals" Padding="10,3" Margin="0,0,14,0" Click="ClearTrendSignals_Click"/>
+
+                        <TextBlock Text="Saved trend" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <ComboBox x:Name="TrendPresetCombo" Width="175" ItemsSource="{Binding TrendPresetNames}"/>
+                        <Button Content="Load" Padding="10,3" Margin="5,0,5,0" Click="LoadTrendPreset_Click"/>
+                        <Button Content="Delete" Padding="10,3" Margin="0,0,14,0" Click="DeleteTrendPreset_Click"/>
+
+                        <TextBlock Text="Save as" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <TextBox x:Name="TrendPresetNameBox" Width="175" Padding="4,2"/>
+                        <Button Content="Save" Padding="10,3" Margin="5,0,0,0" Click="SaveTrendPreset_Click"/>
+                    </WrapPanel>
+
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition x:Name="LcarsTrendRailColumn" Width="0"/></Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" BorderBrush="{DynamicResource LcarsBlueBrush}" BorderThickness="1" CornerRadius="{DynamicResource LcarsCornerRadius}" Background="{DynamicResource ControlBackgroundBrush}"
+                                PreviewMouseLeftButtonDown="TrendChart_DoubleClick" ToolTip="Drag a rectangle to zoom. Double-click the trend to configure signals, colors, scaling, precision, and data-point dots">
+                            <Grid><Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                                <ScrollViewer x:Name="TrendScrollViewer" Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" PanningMode="VerticalOnly" PanningDeceleration="0.001" PanningRatio="1" Stylus.IsPressAndHoldEnabled="False"><controls:TrendChartControl x:Name="TrendChart" MinHeight="{Binding ActualHeight, ElementName=TrendScrollViewer}" IsHitTestVisible="True"/></ScrollViewer>
+                                <Border Grid.Row="1" Visibility="{DynamicResource LcarsFrameVisibility}" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource LcarsLilacBrush}" Padding="8,6" Background="{DynamicResource PanelBackgroundBrush}">
+                                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled"><ItemsControl ItemsSource="{Binding TrendSeries}">
+                                        <ItemsControl.ItemsPanel><ItemsPanelTemplate><StackPanel Orientation="Horizontal"/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate><DataTemplate><Border Width="190" Padding="10,2" Margin="0,0,3,0" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,1,0">
+                                            <StackPanel><StackPanel Orientation="Horizontal"><Ellipse Width="10" Height="10" Fill="{Binding Stroke}" Margin="0,0,7,0"/><TextBlock Text="{Binding LegendLabel}" Foreground="{Binding Stroke}" FontFamily="Bahnschrift SemiCondensed" FontSize="14" FontWeight="Bold" TextTrimming="CharacterEllipsis"/></StackPanel>
+                                                <StackPanel Orientation="Horizontal" Margin="17,1,0,0"><TextBlock Text="{Binding LatestText}" Foreground="{Binding Stroke}" FontSize="25" FontWeight="Bold"/><TextBlock Text="{Binding Unit}" Foreground="{DynamicResource SecondaryTextBrush}" FontSize="12" VerticalAlignment="Bottom" Margin="5,0,0,3"/></StackPanel>
+                                            </StackPanel></Border></DataTemplate></ItemsControl.ItemTemplate>
+                                    </ItemsControl></ScrollViewer>
+                                </Border>
+                            </Grid>
+                        </Border>
+                        <Border Grid.Column="1" Visibility="{DynamicResource LcarsFrameVisibility}" BorderBrush="{DynamicResource LcarsPeachBrush}" BorderThickness="2" Background="{DynamicResource PanelBackgroundBrush}" CornerRadius="18" Margin="9,0,0,0" Padding="10">
+                            <Border.Resources><Style TargetType="Expander"><Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/><Setter Property="FontFamily" Value="Bahnschrift SemiCondensed"/><Setter Property="FontSize" Value="16"/><Setter Property="FontWeight" Value="SemiBold"/><Setter Property="Background" Value="#1B2232"/><Setter Property="Padding" Value="5"/></Style></Border.Resources>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto"><StackPanel>
+                                <Border Background="{DynamicResource LcarsPeachBrush}" CornerRadius="12" Padding="10,6" Margin="0,0,0,9"><TextBlock Text="LCARS SETTINGS" Foreground="#10111C" FontFamily="Bahnschrift SemiCondensed" FontWeight="Bold" FontSize="25"/></Border>
+                                <Expander Header="APPEARANCE" IsExpanded="True" Margin="0,0,0,7"><StackPanel Margin="8,6">
+                                    <TextBlock Text="SKIN  /  LCARS ACTIVE" FontSize="14" Foreground="{DynamicResource LcarsBlueBrush}" FontWeight="Bold"/>
+                                    <Grid Margin="0,7,0,8"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                                        <Border Grid.Column="0" BorderBrush="{DynamicResource LcarsBlueBrush}" BorderThickness="2" CornerRadius="10" Padding="6" Margin="0,0,5,0" Background="#121725"><StackPanel><Grid Height="26"><Grid.ColumnDefinitions><ColumnDefinition Width="13"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Border Background="{DynamicResource LcarsPeachBrush}" CornerRadius="7,0,0,7"/><StackPanel Grid.Column="1" Margin="3,3"><Border Height="6" Background="{DynamicResource LcarsLilacBrush}" CornerRadius="3" Margin="0,0,0,3"/><Border Height="6" Background="{DynamicResource LcarsBlueBrush}" CornerRadius="3"/></StackPanel></Grid><TextBlock Text="●  LCARS" Foreground="{DynamicResource LcarsBlueBrush}" FontSize="12" Margin="0,3,0,0"/></StackPanel></Border>
+                                        <Button Grid.Column="1" Content="CLASSIC DARK ↗" Background="#202535" Foreground="{DynamicResource PrimaryTextBrush}" FontSize="12" Click="Preferences_Click" ToolTip="Switch skin in Preferences"/>
+                                    </Grid>
+                                    <TextBlock Text="ACCENT COLORS" Foreground="{DynamicResource SecondaryTextBrush}" FontSize="12" Margin="0,0,0,4"/>
+                                    <StackPanel Orientation="Horizontal"><Ellipse Width="25" Height="25" Fill="{DynamicResource LcarsPeachBrush}" Margin="0,0,7,0"/><Ellipse Width="25" Height="25" Fill="{DynamicResource LcarsLilacBrush}" Margin="0,0,7,0"/><Ellipse Width="25" Height="25" Fill="{DynamicResource LcarsBlueBrush}" Margin="0,0,7,0"/><Ellipse Width="25" Height="25" Fill="{DynamicResource AccentBrush}"/></StackPanel>
+                                    <Button Content="APPEARANCE SETTINGS" Padding="9,5" Margin="0,9,0,0" Click="Preferences_Click"/>
+                                </StackPanel></Expander>
+                                <Expander Header="CHARTS" IsExpanded="True" Margin="0,0,0,7"><StackPanel Margin="8,6">
+                                    <CheckBox Content="Overlay plots" IsChecked="{Binding IsChecked, ElementName=OverlayTrendCheck, Mode=TwoWay}"/>
+                                    <TextBlock Text="Signals" Foreground="{DynamicResource LcarsBlueBrush}" FontWeight="Bold" Margin="0,8,0,4"/>
+                                    <ItemsControl ItemsSource="{Binding TrendSeries}"><ItemsControl.ItemTemplate><DataTemplate><DockPanel Margin="0,2"><Ellipse Width="10" Height="10" Fill="{Binding Stroke}" Margin="0,0,7,0"/><TextBlock Text="{Binding LegendLabel}" TextTrimming="CharacterEllipsis" FontSize="12"/></DockPanel></DataTemplate></ItemsControl.ItemTemplate></ItemsControl>
+                                    <Button Content="CONFIGURE SIGNALS" Padding="9,5" Margin="0,8,0,0" Click="ConfigureTrends_Click"/>
+                                </StackPanel></Expander>
+                                <Expander Header="CONNECTION"><Button Content="SHOW CONNECTION" Padding="9,5" Margin="8,6" Click="CollapseConnection_Click"/></Expander>
+                                <Expander Header="LOGGING"><Button Content="{Binding Content, ElementName=LoggingButton}" Padding="9,5" Margin="8,6" Click="Logging_Click"/></Expander>
+                                <Expander Header="DATA &amp; UNITS"><Button Content="OPEN UNIT SETTINGS" Padding="9,5" Margin="8,6" Click="Preferences_Click"/></Expander>
+                                <Expander Header="FILE LOCATIONS"><Button Content="OPEN PREFERENCES" Padding="9,5" Margin="8,6" Click="Preferences_Click"/></Expander>
+                                <Expander Header="ADVANCED"><Button Content="OPEN PREFERENCES" Padding="9,5" Margin="8,6" Click="Preferences_Click"/></Expander>
+                            </StackPanel></ScrollViewer>
+                        </Border>
+                    </Grid>
+
+                    <Grid Grid.Row="2" Margin="0,6,0,0">
+                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                        <ScrollViewer x:Name="TrendBottomLegend" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                            <ItemsControl ItemsSource="{Binding TrendSeries}">
+                                <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Margin="0,0,6,4" Padding="7,4" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="4" Background="{DynamicResource PanelBackgroundBrush}">
+                                            <Border.ContextMenu>
+                                                <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+                                                    <MenuItem Header="Create new Calculated value…" Click="CreateCalculatedFromConfiguredSignal_Click"/>
+                                                </ContextMenu>
+                                            </Border.ContextMenu>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <Rectangle Width="13" Height="13" Fill="{Binding Stroke}" Margin="0,0,6,0"/>
+                                                <TextBlock Text="{Binding LegendLabel}" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                        <StackPanel Grid.Row="1">
+                        <DockPanel Margin="0,6">
+                <Button DockPanel.Dock="Right" Content="⚙" FontSize="20" Padding="12,3" Click="ConfigureTrends_Click" ToolTip="Trend settings"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                         <Button Content="◀" Padding="14,6" Click="TrendBack_Click" ToolTip="Back half a window"/>
+                         <Button Content="Ⅱ" Padding="14,6" Margin="8,0,0,0" Click="TrendPause_Click" ToolTip="Freeze chart"/>
+                         <Button Content="▶" Padding="14,6" Click="TrendPlay_Click" ToolTip="Play / resume live chart"/>
+                         <Button Content="▶|" Padding="14,6" Margin="8,0,0,0" Click="TrendForward_Click" ToolTip="Forward half a window"/>
+                         <Button x:Name="LcarsTrendLiveButton" Content="▶▶ Live" Padding="14,6" Margin="8,0,0,0" Click="TrendPlay_Click" ToolTip="Return to live window"/>
+                         <Button Content="Reset zoom" Padding="14,6" Margin="8,0,0,0" Click="TrendResetZoom_Click" ToolTip="Reset drag-selection zoom"/>
+                        </StackPanel></DockPanel>
+                        <TextBlock x:Name="PlaybackStatus" HorizontalAlignment="Center" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        <TextBlock x:Name="TrendStatusText" Foreground="{DynamicResource SecondaryTextBrush}" Text="Right-click or touch-hold a numeric Data card and choose Add to Trend. Double-click the trend to configure colors and scaling." TextWrapping="Wrap"/></StackPanel>
+                    </Grid>
+                </Grid>
+            </TabItem>
+
+            <TabItem><TabItem.Header><StackPanel Orientation="Horizontal"><Path Data="M2,4 L12,14 2,24 M16,24 L29,24" Stroke="{DynamicResource AccentBrush}" StrokeThickness="2" Width="22" Height="22" Stretch="Uniform" Margin="0,0,6,0" VerticalAlignment="Center"/><TextBlock Text="Console" FontSize="14" VerticalAlignment="Center"/></StackPanel></TabItem.Header>
+                <Grid Margin="6">
+                    <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                    <TextBox x:Name="RawLogBox" Grid.Row="0" FontFamily="Consolas" FontSize="13" IsReadOnly="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AcceptsReturn="True" TextWrapping="NoWrap"/>
+                    <Grid Grid.Row="1" Margin="0,6,0,0">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                        <TextBox x:Name="RawCommandBox" Grid.Column="0" FontFamily="Consolas" FontSize="14" Padding="5" KeyDown="RawCommandBox_KeyDown"/>
+                        <Button x:Name="RawSendButton" Grid.Column="1" Content="Send" Padding="18,5" Margin="6,0,0,0" Click="SendRaw_Click"/>
+                        <Button Grid.Column="2" Content="Clear transcript" Padding="12,5" Margin="6,0,0,0" Click="ClearRaw_Click"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+
+            <TabItem><TabItem.Header><StackPanel Orientation="Horizontal"><Path Data="M6,8 L11,8 11,4 20,4 20,8 25,8 29,12 33,12 33,23 28,23 25,27 9,27 5,22 2,22 2,13 6,13 Z M13,1 L20,1 M0,12 L0,23" Stroke="#FF9800" StrokeThickness="2" Width="22" Height="22" Stretch="Uniform" Margin="0,0,6,0" VerticalAlignment="Center"/><TextBlock Text="DTCs" FontSize="14" VerticalAlignment="Center"/></StackPanel></TabItem.Header>
+                <Grid Margin="6">
+                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                    <DockPanel Grid.Row="0" Margin="0,0,0,6">
+                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                            <Button x:Name="ReplayRefreshDtcButton" Content="Refresh DTCs" Padding="12,4" Click="RefreshDtcs_Click"/>
+                            <Button x:Name="EraseDtcsButton" Content="Erase DTCs" Padding="12,4" Margin="6,0,0,0" Click="EraseDtcs_Click"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <TextBlock Text="Diagnostic trouble codes / native fault flags" FontSize="15" FontWeight="SemiBold"/>
+                            <TextBlock x:Name="DtcStatusText" Text="DTCs are read during initialization and refreshed every 60 seconds while polling." Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        </StackPanel>
+                    </DockPanel>
+                    <DataGrid Grid.Row="1" ItemsSource="{Binding DetectedDtcs}" IsReadOnly="True" AutoGenerateColumns="False" CanUserAddRows="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Code" Binding="{Binding Code}" Width="95"/>
+                            <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*" MinWidth="280"/>
+                            <DataGridTextColumn Header="Definition" Binding="{Binding DefinitionSource}" Width="135"/>
+                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="130"/>
+                            <DataGridTextColumn Header="Module" Binding="{Binding Module}" Width="170"/>
+                            <DataGridTextColumn Header="Source" Binding="{Binding Source}" Width="90"/>
+                            <DataGridTextColumn Header="First read" Binding="{Binding FirstRead, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}" Width="170"/>
+                            <DataGridTextColumn Header="Last read" Binding="{Binding LastRead, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}" Width="170"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <TabItem><TabItem.Header><StackPanel Orientation="Horizontal"><Path Data="M4,8 L25,8 28,22 1,22 Z M6,8 L9,2 21,2 24,8 M5,22 L5,27 M24,22 L24,27" Stroke="{DynamicResource AccentBrush}" StrokeThickness="2" Width="22" Height="22" Stretch="Uniform" Margin="0,0,6,0" VerticalAlignment="Center"/><TextBlock Text="Modules" FontSize="14" VerticalAlignment="Center"/></StackPanel></TabItem.Header>
+                <Grid Margin="6"><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                    <DockPanel Margin="0,0,0,6"><StackPanel DockPanel.Dock="Right" Orientation="Horizontal"><ComboBox x:Name="DiscoveryStrategyCombo" Width="145" SelectedIndex="1" Margin="0,0,6,0"><ComboBoxItem Content="Fast discovery"/><ComboBoxItem Content="Comprehensive"/></ComboBox><Button x:Name="ReplayDiscoveryButton" Content="Run neutral discovery" Padding="12,4" Click="Discovery_Click"/></StackPanel><StackPanel><TextBlock x:Name="DiscoverySummaryText" Text="Connect to run neutral discovery." FontSize="15" FontWeight="SemiBold"/><TextBlock x:Name="CalibrationText" Text="VIN / calibration information not yet available." Foreground="{DynamicResource SecondaryTextBrush}"/></StackPanel></DockPanel>
+                    <GroupBox Grid.Row="1" Header="Detected modules" Margin="0,0,0,6"><DataGrid ItemsSource="{Binding DetectedModules}" IsReadOnly="True" AutoGenerateColumns="True" CanUserAddRows="False"/></GroupBox>
+                    <GroupBox Grid.Row="2" Header="Stored trouble codes / fault flags"><DataGrid ItemsSource="{Binding DetectedDtcs}" IsReadOnly="True" AutoGenerateColumns="True" CanUserAddRows="False"/></GroupBox>
+                </Grid>
+            </TabItem>
+
+            <TabItem><TabItem.Header><StackPanel Orientation="Horizontal"><Path Data="M2,3 L27,3 27,27 2,27 Z M2,10 L27,10 M2,18 L27,18 M11,3 L11,27" Stroke="{DynamicResource AccentBrush}" StrokeThickness="2" Width="22" Height="22" Stretch="Uniform" Margin="0,0,6,0" VerticalAlignment="Center"/><TextBlock Text="PIDs" FontSize="14" VerticalAlignment="Center"/></StackPanel></TabItem.Header>
+                <Grid Margin="6">
+                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,6">
+                        <Button x:Name="ReplayReloadPidDatabaseButton" Content="Reload CSV" Padding="12,4" Click="ReloadPidDatabase_Click"/>
+                        <TextBlock Text="  File: " VerticalAlignment="Center"/><TextBlock x:Name="PidPathText" VerticalAlignment="Center" FontFamily="Consolas"/>
+                        <TextBlock Text="   Priority 1 = low, 5 = Live / foreground" VerticalAlignment="Center" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    </StackPanel>
+                    <DataGrid x:Name="PidGrid" Grid.Row="1" IsReadOnly="True" AutoGenerateColumns="True" CanUserAddRows="False"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+        <Border x:Name="LiveRecordingPanel" Grid.Row="3" BorderThickness="0,1,0,0" Padding="5" Margin="0,4,0,0">
+            <DockPanel>
+                <WrapPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                    <Button x:Name="LoggingButton" Content="● Auto record" Foreground="{DynamicResource AccentBrush}" Padding="10,4" Click="Logging_Click" ToolTip="Start / stop CSV recording"/>
+                    <Button Content="▣ Logs" Padding="10,4" Margin="6,0,0,0" Click="OpenLogs_Click" ToolTip="Open logs folder"/>
+                    <TextBox x:Name="EventMarkerBox" Width="220" Margin="12,0,0,0" Padding="6,3" ToolTip="Optional test event note, e.g. Disconnected MAF"/>
+                    <Button Content="Mark event" Padding="10,4" Margin="4,0,0,0" Click="MarkEvent_Click" ToolTip="Timestamp this event into the session and CSV logs"/>
+                    <Button Content="Support ZIP" Padding="10,4" Margin="12,0,0,0" Click="CreateSupportBundle_Click" ToolTip="Create a privacy-sanitized compatibility/debug bundle"/>
+                    <Button Content="Help" Padding="10,4" Margin="6,0,0,0" Click="OpenHelp_Click" ToolTip="Open the local connection guide for the selected ECU family"/>
+                </WrapPanel>
+                <TextBlock x:Name="LastErrorText" Margin="12,0,0,0" VerticalAlignment="Center" Foreground="{DynamicResource ErrorBrush}" TextWrapping="Wrap"/>
+                <TextBlock x:Name="LogPathText" Visibility="Collapsed"/>
+                <TextBlock x:Name="SessionLogPathText" Visibility="Collapsed"/>
+            </DockPanel>
+        </Border>
+        <Border x:Name="ReplayPanel" Visibility="Collapsed" Grid.Row="3" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource BorderBrush}" Padding="6,8,6,4" Margin="0,4,0,0">
+            <Grid>
+                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                <StackPanel Grid.Row="0">
+                    <WrapPanel>                    <Button x:Name="ReplayOpenButton" Content="Open recording…" Padding="12,5" Margin="0,0,8,0" Click="ReplayOpen_Click" ToolTip="Open one or more CSV logs that belong to the same recording"/>
+                    <Button Content="|◀" Width="40" Padding="5,2" Margin="0,0,4,0" Click="ReplayStepBack_Click" ToolTip="Previous recorded update"/>
+                    <Button x:Name="ReplayPlayPauseButton" Content="▶" FontSize="18" Width="44" Padding="6,2" Margin="0,0,4,0" Click="ReplayPlayPause_Click" IsEnabled="False" ToolTip="Play / pause"/>
+                    <Button Content="▶|" Width="40" Padding="5,2" Margin="0,0,8,0" Click="ReplayStepForward_Click" ToolTip="Next recorded update"/>
+                    <ComboBox x:Name="ReplaySpeedCombo" Width="72" SelectedIndex="2" Margin="0,0,10,0" SelectionChanged="ReplaySpeed_Changed" ToolTip="Playback speed">
+                        <ComboBoxItem Content="0.25×" Tag="0.25"/><ComboBoxItem Content="0.5×" Tag="0.5"/><ComboBoxItem Content="1×" Tag="1"/><ComboBoxItem Content="2×" Tag="2"/><ComboBoxItem Content="5×" Tag="5"/><ComboBoxItem Content="10×" Tag="10"/><ComboBoxItem Content="20×" Tag="20"/>
+                    </ComboBox>
+                    </WrapPanel>
+                    <Grid Margin="0,5,0,0">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                        <TextBlock x:Name="ReplayStartText" Text="00:00:00" VerticalAlignment="Center" FontFamily="Consolas"/>
+                        <Slider Grid.Column="1" x:Name="ReplaySlider" Minimum="0" Maximum="1" Value="0" IsMoveToPointEnabled="True" IsEnabled="False" Margin="6,0" ValueChanged="ReplaySlider_ValueChanged"/>
+                        <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock x:Name="ReplayCurrentText" Text="00:00:00" FontFamily="Consolas"/>
+                            <TextBlock x:Name="ReplayEndText" Text="/ 00:00:00" FontFamily="Consolas" Margin="4,0,0,0"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+                <DockPanel x:Name="ReplayDetailsRow" Grid.Row="1" Margin="0,5,0,0">
+                    <TextBlock x:Name="ReplayRecordingText" DockPanel.Dock="Left" Text="No recording loaded" Foreground="{DynamicResource SecondaryTextBrush}" TextTrimming="CharacterEllipsis"/>
+                    <TextBlock x:Name="ReplayCacheText" DockPanel.Dock="Right" Margin="16,0,0,0" Foreground="{DynamicResource SecondaryTextBrush}" TextTrimming="CharacterEllipsis" TextAlignment="Right"/>
+                </DockPanel>
+            </Grid>
+        </Border>
+    </Grid>
+        </Grid>
+    </Grid>
+</DockPanel>
+</Window>
