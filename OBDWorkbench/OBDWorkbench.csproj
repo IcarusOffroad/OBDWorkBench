@@ -1,0 +1,56 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets/IcarusWorkbench.ico</ApplicationIcon>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>OBDWorkbench</AssemblyName>
+    <RootNamespace>OBDWorkbench</RootNamespace>
+    <Version>0.5.0.0</Version>
+    <InformationalVersion>0.5.0.0-r30</InformationalVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets/SplashConcept.png"/>
+    <Resource Include="Assets/IcarusWorkbench.ico"/>
+    <ProjectReference Include="../OBDWorkbench.Core/OBDWorkbench.Core.csproj"/>
+    <ProjectReference Include="../OBDWorkbench.Platform.Windows/OBDWorkbench.Platform.Windows.csproj"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Data\PID_database.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\DTC_generic.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\DTC_manufacturer.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\DTC_vehicle.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\docs\**\*.md" Link="Docs\%(RecursiveDir)%(Filename)%(Extension)">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\GPSService\**\*" Exclude="..\GPSService\**\bin\**;..\GPSService\**\obj\**;..\GPSService\**\publish\**" Link="GPSService\%(RecursiveDir)%(Filename)%(Extension)"><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory></None>
+    <None Include="..\Branding\*.svg;..\Branding\*.ico;..\Branding\*.png;..\Branding\README.md" Link="Branding\%(Filename)%(Extension)"><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory></None>
+    <None Include="..\ARCHITECTURE.md;..\CONTRIBUTING.md;..\SECURITY.md" Link="%(Filename)%(Extension)"><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory></None>
+    <None Include="..\ReferenceData\README.md" Link="ReferenceData\README.md"><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory></None>
+    <None Include="..\LICENSE" Link="LICENSE"><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory></None>
+    <None Include="..\README.md" Link="README.md"><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory></None>
+    <None Include="..\CHANGELOG.md" Link="CHANGELOG.md"><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory></None>
+    <None Include="..\THIRD_PARTY_NOTICES.md" Link="THIRD_PARTY_NOTICES.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\COMMUNICATIONS_REFERENCE.md" Link="COMMUNICATIONS_REFERENCE.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\ReferenceData\SSM_DTC_MAP.csv" Link="ReferenceData\SSM_DTC_MAP.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>

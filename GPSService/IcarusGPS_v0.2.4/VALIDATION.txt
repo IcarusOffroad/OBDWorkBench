@@ -1,0 +1,7 @@
+Icarus GPS v0.2.4 — 2026-10-20 UTC
+Windows-target Tray and Service Release builds succeeded with .NET SDK 8.0.415, with no reported warnings/errors.
+Parser/widget Release suite: all 32 checks passed.
+Executable/taskbar ICOs and three status-badged tray ICOs are embedded; multi-size files verified and static previews inspected.
+Virtual-output stream lifetime is now explicit to avoid a compiler warning; receiver behavior and protocol version 1 remain unchanged.
+Actual Windows icon rendering, installer/ACLs, service execution, widget desktop placement and physical receiver acceptance require testing on Windows.
+Source package: no prebuilt installer, runtime binaries, generated build folders or stale test transcripts included.

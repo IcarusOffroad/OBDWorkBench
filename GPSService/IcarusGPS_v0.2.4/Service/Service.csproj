@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><TargetFramework>net8.0-windows</TargetFramework><OutputType>Exe</OutputType><UseWindowsForms>true</UseWindowsForms><ApplicationIcon>../Assets/IcarusGPS.ico</ApplicationIcon><AssemblyName>IcarusGPS.Service</AssemblyName></PropertyGroup><ItemGroup><ProjectReference Include="../Core/Core.csproj" /><PackageReference Include="System.IO.Ports" Version="8.0.0" /></ItemGroup><ItemGroup>
+    <None Include="../README.md" Link="README.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../LICENSE" Link="LICENSE" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../THIRD_PARTY_NOTICES.md" Link="THIRD_PARTY_NOTICES.md" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup></Project>

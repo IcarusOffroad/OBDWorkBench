@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><TargetFramework>net8.0-windows</TargetFramework><OutputType>WinExe</OutputType><UseWindowsForms>true</UseWindowsForms><ApplicationIcon>../Assets/IcarusGPS.ico</ApplicationIcon><AssemblyName>IcarusGPS.Tray</AssemblyName></PropertyGroup><ItemGroup><ProjectReference Include="../Core/Core.csproj" /></ItemGroup><ItemGroup>
+    <EmbeddedResource Include="../Assets/IcarusGPS.ico" LogicalName="IcarusGPS.Icon" />
+    <EmbeddedResource Include="../Assets/IcarusGPS-offline.ico" LogicalName="IcarusGPS.Icon.offline" />
+    <EmbeddedResource Include="../Assets/IcarusGPS-acquiring.ico" LogicalName="IcarusGPS.Icon.acquiring" />
+    <EmbeddedResource Include="../Assets/IcarusGPS-fix.ico" LogicalName="IcarusGPS.Icon.fix" />
+  </ItemGroup><ItemGroup>
+    <None Include="../README.md" Link="README.md" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../LICENSE" Link="LICENSE" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../THIRD_PARTY_NOTICES.md" Link="THIRD_PARTY_NOTICES.md" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup></Project>
